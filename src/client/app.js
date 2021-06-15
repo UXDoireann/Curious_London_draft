@@ -32,3 +32,14 @@ const freud = L.circle([51.55, -0.1775], {
 
 //Freud Pop-up
 freud.bindPopup("Freud Museum")
+
+//Garden Museum
+const garden = L.circle([51.494, -0.1202], {
+    color: 'green',
+    fillColor: 'green',
+    fillOpacity: 1,
+    radius: 250
+}).addTo(mymap);
+
+//Garden Pop-up
+garden.bindPopup("Garden Museum")
