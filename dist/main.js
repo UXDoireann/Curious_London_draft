@@ -82,14 +82,99 @@ var Client =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+// ref: https://github.com/tc39/proposal-global
+var getGlobal = function () {
+	// the only reliable means to get the global object is
+	// `Function('return this')()`
+	// However, this causes CSP violations in Chrome apps.
+	if (typeof self !== 'undefined') { return self; }
+	if (typeof window !== 'undefined') { return window; }
+	if (typeof global !== 'undefined') { return global; }
+	throw new Error('unable to locate global object');
+}
+
+var global = getGlobal();
+
+module.exports = exports = global.fetch;
+
+// Needed for TypeScript and Webpack.
+if (global.fetch) {
+	exports.default = global.fetch.bind(global);
+}
+
+exports.Headers = global.Headers;
+exports.Request = global.Request;
+exports.Response = global.Response;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "handleMap", function() { return /* reexport */ handleMap; });
+
+// EXTERNAL MODULE: ./node_modules/node-fetch/browser.js
+var browser = __webpack_require__(0);
+var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
+
+// CONCATENATED MODULE: ./src/client/js/map.js
+
+
+//HandleSubmit Function
+function handleMap(event){
+    event.preventDefault()
+
+let mapImage = document.getElementById('map');
+
+
+browser_default()('http://localhost:7070/addMap', {
+    method: 'POST',
+        credentials: 'same-origin',
+       mode: 'cors',
+        headers:{
+            'Content-Type':'application/json',
+        },
+       // body:JSON.stringify({formText: formText})
+})
+.then(res => res.json())
+.then(function(mapFetch) {
+
+    let mymap = L.map('map').setView([51.505, -0.09], 13);
+
+    L.tileLayer(mapFetch, {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'your.mapbox.access.token'
+}).addTo(mymap);
+
+
+        console.log(mapFetch); 
+})}
+
+
+// CONCATENATED MODULE: ./src/client/index.js
 alert('I exist')
+
+
+
+
 
 /***/ })
 /******/ ]);

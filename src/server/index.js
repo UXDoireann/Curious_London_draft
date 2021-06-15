@@ -36,3 +36,25 @@ dotenv.config();
 app.get('/', function (req, res) {
  res.sendFile('dist/index.html')
  })
+
+ //Mapbox API Variables
+let mapboxBaseUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=';
+const mapKey = process.env.ACCESS_TOKEN;
+
+console.log(`Your Mapbox key is ${process.env.ACCESS_TOKEN}`);
+
+//
+
+app.post("/addMap", async(req, res)=>{
+    const getMap = await fetch(`${mapboxBaseUrl}``${mapKey}`,{
+        method: 'POST'
+    });
+    try{
+        const mapFetch = await getMap.json();
+        console.log(mapFetch);
+        res.send(mapFetch);
+    }catch(error){
+        console.log("error", error);
+}
+
+});
